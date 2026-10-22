@@ -47,11 +47,18 @@ export function ensureCredentialStorageSupported(
 }
 
 function runPowerShell(script: string, input: string): string {
+  // PowerShell 7 module paths can make Windows PowerShell load incompatible
+  // security modules. Let the child rebuild its own default module search path.
+  const env = { ...process.env };
+  for (const key of Object.keys(env)) {
+    if (key.toLowerCase() === 'psmodulepath') delete env[key];
+  }
   const result = spawnSync(
     'powershell.exe',
     ['-NoProfile', '-NonInteractive', '-Command', script],
     {
       input,
+      env,
       encoding: 'utf8',
       windowsHide: true,
       maxBuffer: 1024 * 1024
