@@ -104,6 +104,8 @@ kindle --json send "<文档绝对路径>"
 
 ## 本地开发
 
+GitHub Actions 会在 PR 和主分支更新时，使用 Windows、Node.js 22/24 检查安装、构建、测试与打包。macOS 钥匙串目前通过模拟命令测试，尚未覆盖真实 macOS 环境验证。
+
 ```console
 npm ci
 npm run build
